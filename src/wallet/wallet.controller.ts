@@ -8,10 +8,13 @@ import { JwtGuard } from 'src/guard';
 @UseGuards(JwtGuard)
 @Controller('wallet')
 export class WalletController {
-    constructor(private readonly walletSvc: WalletService) { }
+  constructor(private readonly walletSvc: WalletService) {}
 
-    @Post()
-    createWallet(@GetUser('id') userId: number, @Body() createWalletDto: CreateWalletDto) {
-        return this.walletSvc.createWallet(createWalletDto, userId)
-    }
+  @Post()
+  createWallet(
+    @GetUser('id') userId: number,
+    @Body() createWalletDto: CreateWalletDto,
+  ) {
+    return this.walletSvc.createWallet(createWalletDto, userId);
+  }
 }

@@ -9,12 +9,13 @@ import { UserEntity } from 'src/users/user.entity';
 import { PaystackModule } from 'nestjs-paystack';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TransactionEntity, WalletEntity, UserEntity]),
-  PaystackModule.forRoot({
-    apiKey: 'sk_test_6d2bc87ea9130d786e7b9adb2da7514a7100fd61'
-  }),
+  imports: [
+    TypeOrmModule.forFeature([TransactionEntity, WalletEntity, UserEntity]),
+    PaystackModule.forRoot({
+      apiKey: 'sk_test_6d2bc87ea9130d786e7b9adb2da7514a7100fd61',
+    }),
   ],
   controllers: [TransactionsController],
-  providers: [TransactionsService]
+  providers: [TransactionsService],
 })
-export class TransactionsModule { }
+export class TransactionsModule {}

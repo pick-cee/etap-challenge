@@ -11,7 +11,9 @@ import { TransactionEntity } from './transactions/transaction.entity';
 import { PaystackModule } from 'paystack-nestjs';
 
 @Module({
-  imports: [UsersModule, WalletModule,
+  imports: [
+    UsersModule,
+    WalletModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -23,13 +25,13 @@ import { PaystackModule } from 'paystack-nestjs';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [UserEntity, WalletEntity, TransactionEntity],
-        synchronize: true
+        synchronize: true,
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
     TransactionsModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

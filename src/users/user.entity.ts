@@ -4,23 +4,22 @@ import { User } from './interfaces';
 
 @Entity()
 export class UserEntity implements User {
-    @PrimaryGeneratedColumn({
-        type: 'bigint',
-        name: 'userId',
-    })
-    id: number;
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+    name: 'userId',
+  })
+  id: number;
 
-    @Column({
-        nullable: false,
-    })
-    password: string
+  @Column({
+    nullable: false,
+  })
+  password: string;
 
-    @Column({
-        nullable: false,
+  @Column({
+    nullable: false,
+  })
+  phoneNumber: string;
 
-    })
-    phoneNumber: string
-
-    @Column({ enum: ['user', 'admin'], default: 'user' })
-    role: string
+  @Column({ enum: ['user', 'admin'], default: 'user' })
+  role: string;
 }

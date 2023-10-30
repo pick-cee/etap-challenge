@@ -1,24 +1,23 @@
 /* eslint-disable prettier/prettier */
-import { CreateTransaction, MonthlyTx } from "../interfaces";
-
+import { CreateTransaction, MonthlyTx } from '../interfaces';
 
 export class CreateTransactionDto extends CreateTransaction {
-    user: number;
+  user: number;
 
-    wallet: number;
+  wallet: number;
 
-    txAmount: number;
+  txAmount: number;
 
-    txDate: Date;
+  txDate: Date;
 
-    reference: string;
+  reference: string;
 
-    currency: string;
+  currency: string;
 
-    status?: boolean;
+  status?: boolean;
 }
 
 export class CreateMonthlyTxDto extends MonthlyTx {
-    month: number;
-    year: number;
+  month: number;
+  year: number;
 }

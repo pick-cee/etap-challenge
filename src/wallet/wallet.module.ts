@@ -9,6 +9,6 @@ import { UserEntity } from 'src/users/user.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([WalletEntity, UserEntity])],
   controllers: [WalletController],
-  providers: [WalletService]
+  providers: [WalletService],
 })
-export class WalletModule { }
+export class WalletModule {}
