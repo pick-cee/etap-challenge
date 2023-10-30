@@ -67,40 +67,42 @@ export class TransactionsService {
 
     async transfer(userId: number, transfer: TransferWallet) {
         const user = await this.userRepo.findOne({ where: { id: userId } })
-        const userWallet = await this.walletRepo.findOne({ where: { user: userId } })
+        const userWallet = await this.walletRepo.findOne({ where: { user: userId, currency: transfer.currency } })
         const recipient = await this.userRepo.findOneBy({ id: transfer.reciepient })
-        console.log(recipient)
-        const reciepientWallet = await this.walletRepo.findOne({ where: { user: recipient.id, currency: transfer.currency } })
-        console.log(reciepientWallet)
+        const reciepientWallet = await this.walletRepo.findOne({ where: { user: transfer.reciepient, currency: transfer.currency } })
+        if (userWallet.balance > transfer.amount) {
+            if (transfer.amount < 1000000) {
+                await this.walletRepo.update(userWallet.id, { balance: userWallet.balance - transfer.amount })
+                await this.walletRepo.update(reciepientWallet.id, { balance: reciepientWallet.balance + transfer.amount })
+                const newTx = this.transactionRepo.create({
+                    currency: transfer.currency,
+                    txAmount: transfer.amount,
+                    user: recipient.id,
+                    wallet: reciepientWallet.id,
+                    txdate: new Date,
+                    status: true
 
-        // if (userWallet.balance > transfer.amount) {
-        //     if (transfer.amount < 1000000) {
-        //         await this.walletRepo.update(userWallet.id, { balance: userWallet.balance - transfer.amount })
-        //         await this.walletRepo.update(reciepientWallet.id, { balance: reciepientWallet.balance + transfer.amount })
-        //         const newTx = this.transactionRepo.create({
-        //             currency: transfer.currency,
-        //             txAmount: transfer.amount,
-        //             user: recipient.id,
-        //             wallet: reciepientWallet.id,
-        //             txdate: new Date,
-        //             status: true
-        //         })
-        //         return this.transactionRepo.save(newTx)
-        //     }
-        //     else {
-        //         userWallet.balance = userWallet.balance - transfer.amount
-        //         const newTx = this.transactionRepo.create({
-        //             currency: transfer.currency,
-        //             txAmount: transfer.amount,
-        //             user: recipient.id,
-        //             wallet: reciepientWallet.id,
-        //             txdate: new Date,
-        //             status: false
-        //         })
-        //         await this.transactionRepo.save(newTx)
-        //         return 'Your transfer request has been sent to an admin for approval'
-        //     }
-        // }
+                })
+                return this.transactionRepo.save(newTx)
+            }
+            else {
+                userWallet.balance = userWallet.balance - transfer.amount
+                const newTx = this.transactionRepo.create({
+                    currency: transfer.currency,
+                    txAmount: transfer.amount,
+                    user: recipient.id,
+                    wallet: reciepientWallet.id,
+                    txdate: new Date,
+                    status: false
+                })
+                await this.transactionRepo.save(newTx)
+                return 'Your transfer request has been sent to an admin for approval'
+            }
+        }
+        else {
+            return 'Insufficient amount'
+        }
+
     }
 
     async approveTransfer(txId: number, userId: number) {

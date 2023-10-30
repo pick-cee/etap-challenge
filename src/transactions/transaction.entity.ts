@@ -27,7 +27,7 @@ export class TransactionEntity implements Transaction {
     @Column()
     txAmount: number;
 
-    @Column()
+    @Column({ nullable: true })
     reference: string
 
     @Column({ type: Boolean, default: false })
